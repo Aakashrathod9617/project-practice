@@ -1,0 +1,143 @@
+<app-navbar></app-navbar>
+
+<style>
+  #nnn {
+    background: none;
+    border: none;
+  }
+</style>
+
+<div class="content-wrapper"
+  style="background: url('assets/files/wall.jpg') no-repeat center center; background-attachment: fixed; background-size: cover; width: auto; height: 105vh;">
+  <div class="container-fluid">
+
+    <div class="panel panel-primary">
+      <div class="panel-heading" style="height: 50px;">
+        <div class="text-center">
+          <h1 class="text-primary font-weight-bold">{{ 'Salary List' | translate }}</h1>
+        </div>
+      </div>
+
+      <div class="row p-1">
+        <div class="col-sm-1"></div>
+
+      
+      
+
+        <div class="col-sm-2">
+          <select class="form-control" name="mode" [(ngModel)]="form.searchParams.employee">
+            <option [ngValue]="" value="undefined">{{ 'Select Employee' | translate }}</option>
+            <option value="Aakash">{{ 'Aakash' | translate }}</option>
+                  <option value="Ram">{{ 'Ram' | translate }}</option>
+                  <option value="Vaibhav">{{ 'Vaibhav' | translate }}</option>
+                  <option value="Sourabh">{{ 'Sourabh' | translate }}</option>
+                  <option value="Rajesh">{{ 'Rajesh' | translate }}</option>
+                  <option value="Manish">{{ 'Manish' | translate }}</option>
+                  <option value="Yash">{{ 'Yash' | translate }}</option>
+
+          </select>
+        </div>
+        
+        <div class="col-sm-2">
+          <select class="form-control" name="status" [(ngModel)]="form.searchParams.status">
+            <option [ngValue]="" value="undefined">{{ 'Select status' | translate }}</option>
+           
+            <option value="Active">{{ 'Active' | translate }}</option>
+            <option value="Inactive">{{ 'Inactive' | translate }}</option>
+          </select>
+        </div>
+        
+
+
+        <div class="col-sm-2">
+          <input type="date" class="form-control" [(ngModel)]="form.searchParams.appliedDate"
+            placeholder="{{ 'Search Date' | translate }}">
+        </div>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" [(ngModel)]="form.searchParams.amount"
+            placeholder="{{ 'Search amount' | translate }}" (input)="validateInput($event, 'cost')">
+            <span *ngIf="form.searchParams.amount > 2000000" class="alertRedColor" style="color: red;">{{ 'Cost cannot exceed 2,000,000' | translate }}</span>
+
+        </div>
+
+        <div class="col-sm-1 ml-3">
+          <button (click)="submit()" class="btn btn-primary">
+            {{ 'Search' | translate }}</button>
+        </div>
+
+        <div class="col-lg-2 ml-4">
+          <button (click)="forward('/salary')" type="button" class="btn btn-success">{{ 'Add Salary' | translate }}</button>
+        </div>
+
+        <div class="col-sm-1">
+          <button (click)="deleteMany()" class="btn btn-danger">
+            {{ 'Delete' | translate }}</button>
+        </div>
+      </div>
+
+      <div *ngIf="form.error" class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <div *ngIf="!form.error && form.message != null" class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <div class="p-1">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover font-weight-bold text-dark">
+            <thead class="thead-dark text-uppercase">
+              <tr align="center">
+                <th><input type="checkbox" [(ngModel)]="isMasterSel" name="list_name"
+                    (change)="checkUncheckAll($event)" /></th>
+                <th>{{ 'S.No' | translate }}</th>
+                <th>{{ 'EMPLOYEE' | translate }}</th>
+                <th>{{ 'AMOUNT' | translate }}</th>
+                <th>{{ 'APPLIED_DATE' | translate }}</th>
+                <th>{{ 'STATUS' | translate }}</th>
+                <th>{{ 'edit' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of form.list; let i = index" align="center">
+                <td><input type="checkbox" #checkboxes (change)="checklistUpdate()" name="list_name" id="{{ user.id }}"
+                    value="{{ isMasterSel }}" /></td>
+                <td>{{ (form.pageNo * 5) + i + 1 }}</td>
+                <td>{{ user.employee }}</td>
+                <td>{{ user.amount }}</td>
+                <td>{{ user.appliedDate | date:'dd-MM-yyyy' }}</td>
+                <td>{{ user.status }}</td>
+                <td>
+                  <button class="fa fa-edit text-primary" id="nnn" (click)="forward('/salary/' + user.id)"
+                    style="cursor: pointer;"></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table style="width: 100%;">
+            <tr>
+              <td style="width: 50%;">
+                <button (click)="previous()" [disabled]="form.pageNo == 0" class="btn btn-info">
+                  {{ 'Previous' | translate }}</button>
+              </td>
+              <td *ngIf="form.list.length!=0" style="width: 50%;"></td>
+              <td *ngIf="form.list.length==0" style="width: 50%;">
+                <a class="btn btn-warning mr-1" [routerLink]="['/home']" (click)="exit()">
+                  {{ 'Back' | translate }}</a>
+              </td>
+              <td>
+                <button (click)="next()" [disabled]="nextList == 0" type="button" class="btn btn-info">
+                  {{ 'Next' | translate }}</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

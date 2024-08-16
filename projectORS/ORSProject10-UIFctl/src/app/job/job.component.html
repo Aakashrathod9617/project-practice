@@ -1,0 +1,133 @@
+<app-navbar></app-navbar>
+
+<style>
+  .grad {
+    background-image: linear-gradient(to bottom right, rgb(32, 168, 168), rgb(219, 231, 237));
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding-bottom: 25px;
+  }
+</style>
+
+<style type="text/css">
+  .log1 {
+    padding-top: 13%;
+  }
+
+  .input-group-addon {
+    box-shadow: 9px 8px 7px #001a33;
+  }
+</style>
+
+<div class="row"
+  style="padding-top: 2%; padding-bottom: 2%; background: url(assets/files/wall.jpg) no-repeat center center; background-attachment: fixed; background-size: cover; width: 100%; height: auto;">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-body input-group-addon grad">
+        <form name="jobForm">
+          <h2 *ngIf="!form.data.id" class="text-primary font-weight-bold" style="text-align: center;">Add Job</h2>
+          <h2 *ngIf="form.data.id" class="text-primary font-weight-bold" style="text-align: center;">Update Job</h2>
+
+          <div *ngIf="!form.error && form.message" class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ form.message }}
+          </div>
+
+          <div *ngIf="form.error && form.message" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ form.message }}
+          </div>
+
+          <div>
+            <span class="pt-2"><b>Title</b><span class="required-field">*</span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-briefcase"></i></div>
+                </div>
+                <input type="text" name="title" [(ngModel)]="form.data.title" class="form-control"
+                  placeholder="Enter job title" required />
+              </div>
+            </div>
+            <span *ngIf="form.inputerror.title" class="alertRedColor" style="color: red;">Title is required</span>
+          </div>
+
+          <div>
+            <span class="pt-2"><b>Date Of Opening</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-calendar-alt grey-text"></i> </div>
+                </div>
+                <input type="date" name="dateOfOpening" [value]="form.data.dateOfOpening | date:'yyyy-MM-dd'"
+                  (input)="form.data.dateOfOpening=parseDate($event.target.value)" class="form-control form-control-sm"
+                  required />
+              </div>
+            </div>
+            <span *ngIf="form.inputerror.dateOfOpening != null" class="alertRedColor" style="color: red;">{{
+              'Date Of Opening is required' | translate }}</span>
+          </div>
+
+          <div>
+            <span class="pt-2"><b>Experience</b><span class="required-field">*</span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-clock"></i></div>
+                </div>
+                <input type="text" name="experience" [(ngModel)]="form.data.experience"
+                  class="form-control" placeholder="Enter required experience in years" required />
+              </div>
+            </div>
+            <span *ngIf="form.inputerror.experience" class="alertRedColor" style="color: red;">Experience is
+              required</span>
+          </div>
+
+          <div>
+            <span class="pt-2"><b>Status</b><span class="required-field">*</span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-building"></i></div>
+                </div>
+                <select class="form-control" name="status" [(ngModel)]="form.data.status" required>
+                  <option [ngValue]="" value="undefined">{{'Please select' | translate }}</option>
+                  <option value="Open">Open</option>
+                  <option value="Close">Close</option>
+                  <option value="Hold">Hold</option>
+                  <!-- Add other departments as needed -->
+                </select>
+              </div>
+            </div>
+            <span *ngIf="form.inputerror.status" class="alertRedColor" style="color: red;">status is
+              required</span>
+          </div>
+
+
+          <div class="row pt-2 pl-2 pb-3">
+            <div class="col-md-3"></div>
+
+            <div class="pt-2">
+              <button *ngIf="!form.data.id" (click)="submit()" class="btn btn-success mr-2">Save</button>
+            </div>
+
+            <div class="col-md-1"></div>
+
+            <div class="pt-2">
+              <button *ngIf="form.data.id" (click)="submit()" class="btn btn-success mr-2">Update</button>
+            </div>
+
+            <div class="pt-2">
+              <a class="btn btn-warning mr-1" type="button" [routerLink]="['/jobList']"
+                style="text-decoration: none; color: white;">Job List</a>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

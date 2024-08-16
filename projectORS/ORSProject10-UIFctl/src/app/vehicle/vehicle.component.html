@@ -1,0 +1,128 @@
+<app-navbar></app-navbar>
+
+<style>
+  .grad {
+    background-image: linear-gradient(to bottom right, rgb(32, 168, 168), rgb(219, 231, 237));
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding-bottom: 25px;
+  }
+</style>
+
+<style type="text/css">
+  .log1 {
+    padding-top: 13%;
+  }
+
+  .input-group-addon {
+    box-shadow: 9px 8px 7px #001a33;
+  }
+</style>
+
+<div class="row"
+  style="padding-top: 2%; padding-bottom: 2%; background: url(assets/files/wall.jpg) no-repeat center center; background-attachment: fixed; background-size: cover; width: 100%; height: auto;">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-body input-group-addon grad">
+        <form name="vehicleForm">
+          <h2 *ngIf="!form.data.id > 0" class="text-primary font-weight-bold" style="text-align: center;">{{ 'Add Vehicle' | translate }}</h2>
+          <h2 *ngIf="form.data.id > 0" class="text-primary font-weight-bold" style="text-align: center;">{{ 'Update Vehicle' | translate }}</h2>
+
+          <div *ngIf="!form.error && form.message != null" class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ form.message }}
+          </div>
+
+          <div *ngIf="form.error && form.message != null" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ form.message }}
+          </div>
+
+          <div>
+            <span class="pt-2"><b>{{ 'Number' | translate }}</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-id-badge grey-text"></i> </div>
+                </div>
+                <input type="text" name="number" [(ngModel)]="form.data.number" class="form-control"
+                  placeholder="{{ 'Enter Vehicle Number' | translate }}">
+              </div>
+            </div>
+            <span *ngIf="form.inputerror.number != null" class="alertRedColor" style="color: red;">{{ 'number is required' | translate }}</span>
+          </div>
+
+          <div>
+            <span class="pt-2"><b>{{ 'Purchase Date' | translate }}</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-calendar-alt grey-text"></i> </div>
+                </div>
+                <input type="date" name="purchaseDate" [value]="form.data.purchaseDate | date:'yyyy-MM-dd'"
+                  (input)="form.data.purchaseDate=parseDate($event.target.value)"
+                  class="form-control form-control-sm" required />
+              </div>
+            </div>
+            <span *ngIf="form.inputerror.purchaseDate != null" class="alertRedColor" style="color: red;">{{ 'purchaseDate is required' | translate }}</span>
+          </div>
+
+          <div>
+            <span class="pt-2"><b>{{ 'Insurance Amount' | translate }}</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-dollar-sign grey-text"></i> </div>
+                </div>
+                <input type="number" name="insuranceAmount" [(ngModel)]="form.data.insuranceAmount" class="form-control"
+                  placeholder="{{ 'Enter Insurance Amount' | translate }}">
+              </div>
+            </div>
+            <span *ngIf="form.inputerror.insuranceAmount != null" class="alertRedColor" style="color: red;">{{ 'insuranceAmount is required' | translate }}</span>
+          </div>
+
+          <div>
+            <span class="pt-2"><b>{{'Colour' | translate }}</b>
+              <span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-user grey-text"></i> </div>
+                </div>
+
+
+                <select class="form-control" name="colour" [(ngModel)]="form.data.colour" aria-label="ngSelected">
+                  <option [ngValue]="" value="undefined">{{' colour' | translate }}</option>
+                  <option *ngFor="let obj of form.preload.vehicleList" [value]="obj.value">{{obj.value}}</option>
+                </select>
+              </div>
+            </div>
+            <span *ngIf="form.inputerror.id != null" class="alertRedColor" style=" color: red;"> {{'Colour is
+              required'|
+              translate}} </span>
+              <span *ngIf="form.inputerror.colour != null" class="alertRedColor" style="color: red;">{{ 'colour is required' | translate }}</span>
+            </div>
+
+          <div class="row pt-2 pl-2 pb-3">
+            <div class="col-md-3"></div>
+            <div class="pt-2">
+              <button *ngIf="!form.data.id>0" (click)="onUpload()" class="btn btn-success mr-2">
+                {{'Save' | translate }}</button>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="pt-2">
+              <button *ngIf="form.data.id>0" (click)="onUpload()" class="btn btn-success mr-2">
+                {{'Update' | translate }}</button>
+            </div>
+            <div class="pt-2">
+              <a class="btn btn-warning mr-1" type="button" [routerLink]="['/vehicleList']"
+                style="text-decoration: none; color: white;">{{'List' | translate }}</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

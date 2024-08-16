@@ -1,0 +1,144 @@
+<app-navbar></app-navbar>
+
+<style>
+  .grad {
+    background-image: linear-gradient(to bottom right, rgb(32, 168, 168), rgb(219, 231, 237));
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding-bottom: 25px;
+  }
+</style>
+
+<style type="text/css">
+  .log1 {
+    padding-top: 13%;
+  }
+
+  .input-group-addon {
+    box-shadow: 9px 8px 7px #001a33;
+  }
+</style>
+
+<div class="row"
+  style="padding-top: 2%; padding-bottom: 2%; background: url(assets/files/wall.jpg) no-repeat center center; background-attachment: fixed; background-size: cover; width: 100%; height: auto;">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-body input-group-addon grad">
+        <form name="salaryForm">
+          <h2 *ngIf="!form.data.id>0" class="text-primary font-weight-bold" style="text-align: center;">{{'Add Salary' |
+            translate }}</h2>
+          <h2 *ngIf="form.data.id>0" class="text-primary font-weight-bold" style="text-align: center;">{{'Update Salary' |
+            translate }}</h2>
+          <div *ngIf="!form.error && form.message != null" class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ form.message }}
+          </div>
+
+          <div *ngIf="form.error && form.message != null" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ form.message }}
+          </div>
+
+          <div>
+            <span class="pt-2"><b>{{ 'Employee' | translate }}</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-user grey-text"></i></div>
+                </div>
+                <select class="form-control" name="employee" id="employee" [(ngModel)]="form.data.employee"
+                  style="cursor: pointer;">
+                  <option [ngValue]="" value="undefined">{{ 'Please select' | translate }}</option>
+                  <option value="Aakash">{{ 'Aakash' | translate }}</option>
+                  <option value="Ram">{{ 'Ram' | translate }}</option>
+                  <option value="Vaibhav">{{ 'Vaibhav' | translate }}</option>
+                  <option value="Sourabh">{{ 'Sourabh' | translate }}</option>
+                  <option value="Rajesh">{{ 'Rajesh' | translate }}</option>
+                  <option value="Manish">{{ 'Manish' | translate }}</option>
+                  <option value="Yash">{{ 'Yash' | translate }}</option>
+                </select>
+              </div>
+              <span *ngIf="form.inputerror.employee != null" class="alertRedColor" style="color: red;">{{ 'employee is required' | translate }}</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="pt-2"><b>{{ 'AMOUNT' | translate }}</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-dollar-sign grey-text"></i></div>
+                </div>
+                <input type="number" name="amount" [(ngModel)]="form.data.amount" class="form-control"
+                  placeholder="{{ 'Enter amount' | translate }}" (blur)="validateAmount()">
+              </div>
+              <span *ngIf="form.inputerror.amount != null" class="alertRedColor" style="color: red;">{{ 'amount is required' | translate }}</span>
+             
+
+            <span *ngIf="form.data.amount > 200000" class="alertRedColor" style="color: red;">{{ '  amount cannot exceed 200,000' | translate }}</span>
+      
+          </div>
+          </div>
+
+          <div>
+            <span class="pt-2"><b>{{ 'Applied Date' | translate }}</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-calendar-alt grey-text"></i></div>
+                </div>
+                <input type="date" name="appliedDate" [value]="form.data.appliedDate | date:'yyyy-MM-dd'"
+                  (input)="form.data.appliedDate = $event.target.value" class="form-control form-control-sm"
+                  required />
+              </div>
+              <span *ngIf="form.inputerror.appliedDate != null" class="alertRedColor" style="color: red;">{{ 'Applied Date is required' | translate }}</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="pt-2"><b>{{ 'Status' | translate }}</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-check-circle grey-text"></i></div>
+                </div>
+                <select class="form-control" name="status" id="status" [(ngModel)]="form.data.status"
+                  style="cursor: pointer;">
+                  <option [ngValue]="" value="undefined">{{ 'Please select' | translate }}</option>
+                  <option value="Active">{{ 'Active' | translate }}</option>
+                  <option value="Inactive">{{ 'Inactive' | translate }}</option>
+                </select>
+              </div>
+              <span *ngIf="form.inputerror.status != null" class="alertRedColor" style="color: red;">{{ 'Status is required' | translate }}</span>
+            </div>
+          </div>
+
+          <div class="row pt-2 pl-2 pb-3">
+            <div class="col-md-3"></div>
+
+            <div class="pt-2">
+              <button *ngIf="!form.data.id>0" (click)="onUpload()" class="btn btn-success mr-2">
+                {{'Save' | translate }}</button>
+            </div>
+
+            <div class="col-md-1"></div>
+
+            <div class="pt-2">
+              <button *ngIf="form.data.id>0" (click)="onUpload()" class="btn btn-success mr-2">
+                {{'Update' | translate }}</button>
+            </div>
+
+            <div class="pt-2">
+              <a class="btn btn-warning mr-1" type="button" [routerLink]="['/salarylist']"
+                style="text-decoration: none; color: white;">{{ 'List' | translate }}</a>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

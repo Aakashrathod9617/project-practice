@@ -1,0 +1,137 @@
+<app-navbar></app-navbar>
+
+<style>
+  #nnn {
+    background: none;
+    border: none;
+  }
+</style>
+
+<div class="content-wrapper"
+  style="background: url('assets/files/wall.jpg') no-repeat center center; background-attachment: fixed; background-size: cover; width: auto; height: 105vh;">
+  <div class="container-fluid">
+
+    <div class="panel panel-primary">
+      <div class="panel-heading" style="height: 50px;">
+        <div class="text-center">
+          <h1 class="text-primary font-weight-bold">{{ 'Employee List' | translate }}</h1>
+        </div>
+      </div>
+
+      <div class="row p-1">
+        <div class="col-sm-1"></div>
+
+        <div class="col-sm-2">
+          <input type="text" class="form-control" [(ngModel)]="form.searchParams.name"
+            placeholder="{{ 'Search Name' | translate }}" pattern="[A-Za-z\s]*"
+            (input)="validateInput($event, 'name')">
+            <div *ngIf="!isValidNameInput" class="text-danger">
+              Please enter letters and spaces only.
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+          <select class="form-control" name="department" [(ngModel)]="form.searchParams.department">
+            <option [ngValue]="" value="undefined">{{ 'Select department' | translate }}</option>
+            <option value="HR">{{ 'HR' | translate }}</option>
+            <option value="IT">{{ 'IT' | translate }}</option>
+            <option value="Finance">{{ 'Finance' | translate }}</option>
+            <option value="QA">{{ 'QA' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="col-sm-2">
+          <input type="date" class="form-control" [(ngModel)]="form.searchParams.dateOfJoining"
+            placeholder="{{ 'Search Date of Joining' | translate }}">
+        </div>
+
+        <div class="col-sm-2">
+          <input type="text" class="form-control" [(ngModel)]="form.searchParams.lastEmployerName"
+            placeholder="{{ 'Search Last Employer Name' | translate }}" pattern="[A-Za-z\s]*"
+            (input)="validateInput($event, 'name')">
+            <div *ngIf="!isValidNameInput" class="text-danger">
+              Please enter letters and spaces only.
+            </div>
+        </div>
+
+        <div class="col-sm-1 ml-3">
+          <button (click)="submit()" class="btn btn-primary">
+            {{ 'Search' | translate }}</button>
+        </div>
+
+        <div class="col-lg-2 ml-4">
+          <button (click)="forward('/empl/add')" type="button" class="btn btn-success">{{ 'Add Employee' | translate }}</button>
+        </div>
+
+        <div class="col-sm-1">
+          <button (click)="deleteMany()" class="btn btn-danger">
+            {{ 'Delete' | translate }}</button>
+        </div>
+      </div>
+
+      <div *ngIf="form.error" class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <div *ngIf="!form.error && form.message != null" class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <div class="p-1">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover font-weight-bold text-dark">
+            <thead class="thead-dark text-uppercase">
+              <tr align="center">
+                <th><input type="checkbox" [(ngModel)]="isMasterSel" name="list_name"
+                    (change)="checkUncheckAll($event)" /></th>
+                <th>{{ 'S.No' | translate }}</th>
+                <th>{{ 'Name' | translate }}</th>
+                <th>{{ 'Date Of Joining' | translate }}</th>
+                <th>{{ 'Department' | translate }}</th>
+                <th>{{ 'Last Employer Name' | translate }}</th>
+                <th>{{ 'edit' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let employee of form.list; let i = index" align="center">
+                <td><input type="checkbox" #checkboxes (change)="checklistUpdate()" name="list_name" id="{{ employee.id }}"
+                    value="{{ isMasterSel }}" /></td>
+                <td>{{ (form.pageNo * 5) + i + 1 }}</td>
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.dateOfJoining | date:'dd-MM-yyyy' }}</td>
+                <td>{{ employee.department }}</td>
+                <td>{{ employee.lastEmployerName }}</td>
+                <td>
+                  <button class="fa fa-edit text-primary" id="nnn" (click)="forward('/empl/' + employee.id)"
+                    style="cursor: pointer;"></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table style="width: 100%;">
+            <tr>
+              <td style="width: 50%;">
+                <button (click)="previous()" [disabled]="form.pageNo == 0" class="btn btn-info">
+                  {{ 'Previous' | translate }}</button>
+              </td>
+              <td *ngIf="form.list.length!=0" style="width: 50%;"></td>
+              <td *ngIf="form.list.length==0" style="width: 50%;">
+                <a class="btn btn-warning mr-1" [routerLink]="['/emplList']" (click)="exit()">
+                  {{ 'Back' | translate }}</a>
+              </td>
+              <td>
+                <button (click)="next()" [disabled]="nextList == 0" type="button" class="btn btn-info">
+                  {{ 'Next' | translate }}</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

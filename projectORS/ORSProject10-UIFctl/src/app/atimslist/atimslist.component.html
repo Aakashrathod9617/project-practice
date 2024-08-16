@@ -1,0 +1,137 @@
+<app-navbar></app-navbar>
+
+<style>
+  #nnn {
+    background: none;
+    border: none;
+  }
+</style>
+
+<div class="content-wrapper"
+  style="background: url('assets/files/wall.jpg') no-repeat center center; background-attachment: fixed; background-size: cover; width: auto; height: 105vh;">
+  <div class="container-fluid">
+
+    <div class="panel panel-primary">
+      <div class="panel-heading" style="height: 50px;">
+        <div class="text-center">
+          <h1 class="text-primary font-weight-bold">{{ 'ATIMS List' | translate }}</h1>
+        </div>
+      </div>
+
+      <div class="row p-1">
+        <div class="col-sm-1"></div>
+
+        <div class="col-sm-2">
+          <select class="form-control" name="location" id="location" [(ngModel)]="form.searchParams.location"
+          style="cursor: pointer;">
+          <option [ngValue]="" value="undefined">{{ 'Please location' | translate }}</option>
+          <option value="Indore">{{ 'Indore' | translate }}</option>
+          <option value="Bhopal">{{ 'Bhopal' | translate }}</option>
+          <option value="Khargone">{{ 'Khargone' | translate }}</option>
+          <option value="Dhar">{{ 'Dhar' | translate }}</option>
+
+        </select>
+        </div>
+
+        <div class="col-sm-2">
+          <input type="number" class="form-control" [(ngModel)]="form.searchParams.cashAvailable"
+            placeholder="{{ 'Search Cost' | translate }}" (input)="validateInput($event, 'cashAvailable')">
+            <span *ngIf="form.searchParams.cashAvailable > 200000" class="alertRedColor" style="color: red;">{{ 'Cash cannot exceed 200,000' | translate }}</span>
+
+        </div>
+
+        <div class="col-sm-2">
+          <input type="date" class="form-control" [(ngModel)]="form.searchParams.lastRestockedDate"
+            placeholder="{{ 'Last Restocked Date' | translate }}">
+        </div>
+
+        <div class="col-sm-2">
+          <input type="text" class="form-control" [(ngModel)]="form.searchParams.remark"
+            placeholder="{{ 'Remark' | translate }}" pattern="[A-Za-z\s]*"
+            (input)="validateInput($event, 'remark')">
+          <div *ngIf="!isValidRemarkInput" class="text-danger">
+            Please enter letters and spaces only.
+          </div>
+        </div>
+
+        <div class="col-sm-1 ml-3">
+          <button (click)="submit()" class="btn btn-primary">
+            {{ 'Search' | translate }}</button>
+        </div>
+
+        <div class="col-lg-2 ml-4">
+          <button (click)="forward('/atims')" type="button" class="btn btn-success">{{ 'Add ATIMS' | translate }}</button>
+        </div>
+
+        <div class="col-sm-1">
+          <button (click)="deleteMany()" class="btn btn-danger">
+            {{ 'Delete' | translate }}</button>
+        </div>
+      </div>
+
+      <div *ngIf="form.error" class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <div *ngIf="!form.error && form.message != null" class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ form.message }}
+      </div>
+
+      <div class="p-1">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover font-weight-bold text-dark">
+            <thead class="thead-dark text-uppercase">
+              <tr align="center">
+                <th><input type="checkbox" [(ngModel)]="isMasterSel" name="list_name"
+                    (change)="checkUncheckAll($event)" /></th>
+                <th>{{ 'S.No' | translate }}</th>
+                <th>{{ 'LOCATION' | translate }}</th>
+                <th>{{ 'CASH AVAILABLE' | translate }}</th>
+                <th>{{ 'LAST RESTOCKED DATE' | translate }}</th>
+                <th>{{ 'REMARK' | translate }}</th>
+                <th>{{ 'edit' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of form.list; let i = index" align="center">
+                <td><input type="checkbox" #checkboxes (change)="checklistUpdate()" name="list_name" id="{{ item.id }}"
+                    value="{{ isMasterSel }}" /></td>
+                <td>{{ (form.pageNo * 5) + i + 1 }}</td>
+                <td>{{ item.location }}</td>
+                <td>{{ item.cashAvailable }}</td>
+                <td>{{ item.lastRestockedDate | date:'dd-MM-yyyy' }}</td>
+                <td>{{ item.remark }}</td>
+                <td>
+                  <button class="fa fa-edit text-primary" id="nnn" (click)="forward('/atims/' + item.id)"
+                    style="cursor: pointer;"></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table style="width: 100%;">
+            <tr>
+              <td style="width: 50%;">
+                <button (click)="previous()" [disabled]="form.pageNo == 0" class="btn btn-info">
+                  {{ 'Previous' | translate }}</button>
+              </td>
+              <td *ngIf="form.list.length != 0" style="width: 50%;"></td>
+              <td *ngIf="form.list.length == 0" style="width: 50%;">
+                <a class="btn btn-warning mr-1" [routerLink]="['/home']" (click)="exit()">
+                  {{ 'Back' | translate }}</a>
+              </td>
+              <td>
+                <button (click)="next()" [disabled]="nextList == 0" type="button" class="btn btn-info">
+                  {{ 'Next' | translate }}</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

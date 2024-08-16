@@ -1,0 +1,139 @@
+<app-navbar></app-navbar>
+
+<style>
+  .grad {
+    background-image: linear-gradient(to bottom right, rgb(32, 168, 168), rgb(219, 231, 237));
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding-bottom: 25px;
+  }
+</style>
+
+<style type="text/css">
+  .log1 {
+    padding-top: 13%;
+  }
+
+  .input-group-addon {
+    box-shadow: 9px 8px 7px #001a33;
+  }
+</style>
+
+<div class="row"
+  style="padding-top: 2%; padding-bottom: 2%; background: url(assets/files/wall.jpg) no-repeat center center; background-attachment: fixed; background-size: cover; width: 100%; height: auto;">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-body input-group-addon grad">
+        <form name="atimsForm">
+          <h2 *ngIf="!form.data.id>0" class="text-primary font-weight-bold" style="text-align: center;">{{'Add ATM Info' |
+            translate }}</h2>
+          <h2 *ngIf="form.data.id>0" class="text-primary font-weight-bold" style="text-align: center;">{{'Update ATM Info' |
+            translate }}</h2>
+          <div *ngIf="!form.error && form.message != null" class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ form.message }}
+          </div>
+
+          <div *ngIf="form.error && form.message != null" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ form.message }}
+          </div>
+
+          <div>
+            <span class="pt-2"><b>{{ 'Location' | translate }}</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-check-circle grey-text"></i></div>
+                </div>
+                <select class="form-control" name="location" id="location" [(ngModel)]="form.data.location"
+                  style="cursor: pointer;">
+                  <option [ngValue]="" value="undefined">{{ 'Please location' | translate }}</option>
+                  <option value="Indore">{{ 'Indore' | translate }}</option>
+                  <option value="Bhopal">{{ 'Bhopal' | translate }}</option>
+                  <option value="Khargone">{{ 'Khargone' | translate }}</option>
+                  <option value="Dhar">{{ 'Dhar' | translate }}</option>
+
+
+                </select>
+              </div>
+              <span *ngIf="form.inputerror.location != null" class="alertRedColor" style="color: red;">{{ 'location is required' | translate }}</span>
+            </div>
+          </div>
+
+
+          <div>
+            <span class="pt-2"><b>{{ 'Cash Available' | translate }}</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-dollar-sign grey-text"></i></div>
+                </div>
+                <input type="number" name="cashAvailable" [(ngModel)]="form.data.cashAvailable" class="form-control"
+                  placeholder="{{ 'Enter cash available' | translate }}" required>
+              </div>
+              <span *ngIf="form.inputerror.cashAvailable != null" class="alertRedColor" style="color: red;">{{ 'Cash available is required' | translate }}</span>
+              <span *ngIf="form.data.cashAvailable > 200000" class="alertRedColor" style="color: red;">{{ '  amount cannot exceed 200,000' | translate }}</span>
+
+            </div>
+          </div>
+
+          <div>
+            <span class="pt-2"><b>{{ 'Last Restocked Date' | translate }}</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-calendar-alt grey-text"></i></div>
+                </div>
+                <input type="date" name="lastRestockedDate" [value]="form.data.lastRestockedDate | date:'yyyy-MM-dd'"
+                  (input)="form.data.lastRestockedDate = $event.target.value" class="form-control form-control-sm"
+                  required />
+              </div>
+              <span *ngIf="form.inputerror.lastRestockedDate != null" class="alertRedColor" style="color: red;">{{ 'Last restocked date is required' | translate }}</span>
+            </div>
+          </div>
+
+
+          <div>
+            <span class="pt-2"><b>{{ 'Remark' | translate }}</b><span class="required-field"></span></span>
+            <div class="col-sm-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-comment grey-text"></i></div>
+                </div>
+                <textarea name="remark" [(ngModel)]="form.data.remark" class="form-control"
+                  placeholder="{{ 'Enter remark' | translate }}" required></textarea>
+              </div>
+              <span *ngIf="form.inputerror.remark != null" class="alertRedColor" style="color: red;">{{ 'Remark is required' | translate }}</span>
+            </div>
+          </div>
+
+          <div class="row pt-2 pl-2 pb-3">
+            <div class="col-md-3"></div>
+
+            <div class="pt-2">
+              <button *ngIf="!form.data.id>0" (click)="onUpload()" class="btn btn-success mr-2">
+                {{'Save' | translate }}</button>
+            </div>
+
+            <div class="col-md-1"></div>
+
+            <div class="pt-2">
+              <button *ngIf="form.data.id>0" (click)="onUpload()" class="btn btn-success mr-2">
+                {{'Update' | translate }}</button>
+            </div>
+
+            <div class="pt-2">
+              <a class="btn btn-warning mr-1" type="button" [routerLink]="['/atimslist']"
+                style="text-decoration: none; color: white;">{{ 'List' | translate }}</a>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
